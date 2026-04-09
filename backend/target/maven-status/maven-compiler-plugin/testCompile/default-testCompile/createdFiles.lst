@@ -1,0 +1,3 @@
+com\devhelper\DevhelperApplicationTests.class
+com\devhelper\controller\SnippetControllerTest.class
+com\devhelper\service\SnippetServiceTest.class

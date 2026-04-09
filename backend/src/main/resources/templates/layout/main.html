@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devhelper - <th:block layout:fragment="title">Dashboard</th:block></title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- DataTables CSS -->
+    <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <!-- Custom CSS Base -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    
+    <th:block layout:fragment="page-css"></th:block>
+
+    <!-- Theme manager (Carga temprana para evitar FOUC) -->
+    <script th:src="@{/js/theme.js}"></script>
+</head>
+<body class="bg-light">
+
+    <!-- Navbar Fragment -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar Fragment -->
+            <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+            <!-- Main Content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2"><th:block layout:fragment="page-header">Dashboard</th:block></h1>
+                    <!-- Opcional Toolbar Fragment -->
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <th:block layout:fragment="page-toolbar"></th:block>
+                    </div>
+                </div>
+
+                <!-- Breadcrumbs -->
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+                        <th:block layout:fragment="breadcrumb"></th:block>
+                    </ol>
+                </nav>
+
+                <!-- Page Content -->
+                <div layout:fragment="content">
+                    <!-- Default Content Template -->
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Scripts CDN -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+    
+    <!-- Custom script genérico inicial -->
+    <script th:src="@{/js/main.js}"></script>
+
+    <th:block layout:fragment="page-scripts"></th:block>
+</body>
+</html>

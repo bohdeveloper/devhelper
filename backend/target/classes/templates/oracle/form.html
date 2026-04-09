@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/main}">
+<body>
+    <th:block layout:fragment="title" th:text="${oracleObject.id == null ? 'Nuevo Script Oracle' : 'Editar Script Oracle'}"></th:block>
+    <th:block layout:fragment="page-header" th:text="${oracleObject.id == null ? 'Nuevo Script' : 'Editar Script'}"></th:block>
+    
+    <th:block layout:fragment="breadcrumb">
+        <li class="breadcrumb-item"><a th:href="@{/oracle}">Oracle Toolkit</a></li>
+        <li class="breadcrumb-item active" aria-current="page" th:text="${oracleObject.id == null ? 'Nuevo' : 'Editar'}"></li>
+    </th:block>
+
+    <div layout:fragment="content">
+        <div class="row">
+            <div class="col-lg-9 mb-4">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <form th:action="@{/oracle/save}" th:object="${oracleObject}" method="post">
+                            <input type="hidden" th:field="*{id}">
+
+                            <div class="row mb-3">
+                                <div class="col-md-8">
+                                    <label class="form-label fw-bold">Nombre del Objeto</label>
+                                    <input type="text" class="form-control font-monospace text-uppercase" th:field="*{name}" required placeholder="USERS_TABLE" onkeyup="this.value = this.value.toUpperCase();">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label fw-bold">Tipo de Objeto</label>
+                                    <select class="form-select" th:field="*{type}">
+                                        <option value="TABLE">TABLE</option>
+                                        <option value="VIEW">VIEW</option>
+                                        <option value="SEQUENCE">SEQUENCE</option>
+                                        <option value="PROCEDURE">PROCEDURE</option>
+                                        <option value="FUNCTION">FUNCTION</option>
+                                        <option value="PACKAGE">PACKAGE</option>
+                                        <option value="TRIGGER">TRIGGER</option>
+                                        <option value="SYNONYM">SYNONYM</option>
+                                        <option value="INDEX">INDEX</option>
+                                        <option value="OTHER">OTRO SCRIPT DDL</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label fw-bold d-flex justify-content-between">
+                                    <span>Definición SQL / DDL</span>
+                                    <span class="small text-muted fw-normal">Soporta múltiples sentencias</span>
+                                </label>
+                                <textarea class="form-control bg-dark text-light font-monospace" th:field="*{definition}" rows="15" required style="font-size: 14px;"></textarea>
+                                <div class="form-text text-muted small mt-2">
+                                    Al hacer click en Guardar, el archivo se escribirá físicamente como <code>[NOMBRE]_[TIPO].sql</code> en la carpeta de <code>oracle-toolkit</code> de tu ordenador.
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-end gap-2">
+                                <a th:href="@{/oracle}" class="btn btn-secondary">Cancelar</a>
+                                <button type="submit" class="btn btn-danger"><i class="bi bi-save me-1"></i>Guardar y Exportar a Fichero</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3">
+                <div class="card shadow-sm border-0 border-start border-warning border-4 bg-light">
+                    <div class="card-body">
+                        <h6 class="card-title fw-bold text-dark"><i class="bi bi-lightbulb me-1 text-warning"></i>Mejores Prácticas</h6>
+                        <ul class="small text-muted ps-3 mb-0">
+                            <li class="mb-2">Asegura que tus scripts sean redundantes o idempotentes (uso de <code>CREATE OR REPLACE</code> para procedientos).</li>
+                            <li class="mb-2">Separa las sentencias con <code>/</code> si interactúan bloques PL/SQL.</li>
+                            <li>No incluyas el nombre del esquema si este se resuelve dinámicamente en tu Pipeline.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/main}">
+
+<head>
+    <th:block layout:fragment="page-css">
+        <!-- Any specific CSS for DataTables here -->
+    </th:block>
+</head>
+
+<body>
+    <th:block layout:fragment="title">Snippets</th:block>
+    <th:block layout:fragment="page-header">Gestor de Snippets</th:block>
+
+    <th:block layout:fragment="page-toolbar">
+        <a th:href="@{/snippets/create}" class="btn btn-sm btn-primary">
+            <i class="bi bi-plus-circle me-1"></i>Nuevo Snippet
+        </a>
+    </th:block>
+
+    <th:block layout:fragment="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Snippets</li>
+    </th:block>
+
+    <div layout:fragment="content">
+        <!-- Alertas Flash -->
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle me-1"></i><span th:text="${successMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle me-1"></i><span th:text="${errorMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <table id="snippetsTable" class="table table-striped table-hover w-100">
+                    <thead>
+                        <tr>
+                            <th width="5%">ID</th>
+                            <th width="30%">Nombre</th>
+                            <th width="15%">Lenguaje</th>
+                            <th width="20%">Tags</th>
+                            <th width="15%">Fecha</th>
+                            <th width="15%" class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="snippet : ${snippets}">
+                            <td th:text="${snippet.id}">1</td>
+                            <td class="fw-bold" th:text="${snippet.name}">Hello World</td>
+                            <td>
+                                <span class="badge bg-secondary" th:text="${snippet.language}">Java</span>
+                            </td>
+                            <td th:text="${snippet.tags}">java, test</td>
+                            <td th:text="${#temporals.format(snippet.createdAt, 'dd-MM-yyyy HH:mm')}"></td>
+                            <td class="text-center text-nowrap">
+                                <button type="button" class="btn btn-sm btn-outline-info copy-btn"
+                                    th:data-clipboard="${snippet.content}" title="Copiar al portapapeles">
+                                    <i class="bi bi-clipboard"></i>
+                                </button>
+                                <a th:href="@{/snippets/edit/{id}(id=${snippet.id})}"
+                                    class="btn btn-sm btn-outline-primary" title="Editar">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <form th:action="@{/snippets/delete/{id}(id=${snippet.id})}" method="post"
+                                    class="d-inline" onsubmit="return confirm('¿Eliminar snippet?');">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="page-scripts">
+        <!-- turn off Thymeleaf inlining here to avoid [[ ... ]] interpretation -->
+        <script th:inline="none">
+            $(document).ready(function () {
+                $('#snippetsTable').DataTable({
+                    language: {
+                        url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
+                    },
+                    order: [[4, 'desc']],
+                    pageLength: 25
+                });
+
+                // Init copy buttons
+                $('.copy-btn').click(function () {
+                    let content = $(this).attr('data-clipboard');
+                    ClipboardUtil.copyToClipboard(content);
+                });
+            });
+        </script>
+    </th:block>
+</body>
+
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/main}">
+<body>
+    <th:block layout:fragment="title">Resultado Generado</th:block>
+    <th:block layout:fragment="page-header" th:text="${title}">Código Generado</th:block>
+    
+    <th:block layout:fragment="page-toolbar">
+        <button class="btn btn-sm btn-outline-secondary me-2" onclick="history.back()">
+            <i class="bi bi-arrow-left me-1"></i>Volver
+        </button>
+        <!-- Enviar a storage podria ser otra opción, pero copiar al clip es suficiente por ahora para frontend -->
+        <button class="btn btn-sm btn-primary copy-btn" th:data-clipboard="${generatedCode}">
+            <i class="bi bi-clipboard me-1"></i>Copiar Portapapeles
+        </button>
+    </th:block>
+
+    <th:block layout:fragment="breadcrumb">
+        <li class="breadcrumb-item"><a th:href="@{/frontend}">Frontend</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Resultado</li>
+    </th:block>
+
+    <div layout:fragment="content">
+        <div class="card shadow-sm border-0 bg-dark text-white">
+            <div class="card-header border-bottom border-secondary d-flex justify-content-between align-items-center py-3">
+                <h6 class="m-0 font-monospace"><i class="bi bi-code-slash me-2"></i>Código Fuente (<span th:text="${language}">html</span>)</h6>
+            </div>
+            <div class="card-body p-0">
+                <pre class="m-0 p-3 border-0 rounded-bottom" style="max-height: 60vh; font-size:14px;"><code th:text="${generatedCode}"></code></pre>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="page-scripts">
+        <script>
+            $(document).ready(function() {
+                $('.copy-btn').click(function() {
+                    let content = $(this).attr('data-clipboard');
+                    ClipboardUtil.copyToClipboard(content);
+                });
+            });
+        </script>
+    </th:block>
+</body>
+</html>

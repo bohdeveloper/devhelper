@@ -1,0 +1,179 @@
+# DEVHELPER - GUÍA RÁPIDA DE INSTALACIÓN Y EJECUCIÓN
+
+## DESCRIPCIÓN
+
+devhelper es una herramienta local para desarrolladores web diseñada para mejorar la productividad en tareas diarias de desarrollo.
+
+Permite gestionar snippets de código, generar estructuras frontend con Bootstrap, crear artefactos backend en Java (Spring Boot) y producir scripts de base de datos (incluyendo Oracle), todo desde una única aplicación ejecutada en local.
+
+La aplicación no depende de servicios externos ni APIs de pago, y está pensada para ser rápida, sencilla de usar y completamente portable.
+
+1. REQUISITOS PREVIOS
+
+Antes de comenzar, asegúrate de tener instalado:
+
+* Java JDK 21
+* Maven 3.9+ (opcional si usas mvnw)
+* Git
+
+Verificar instalación:
+
+```
+java -version
+git --version
+```
+
+2. CLONAR EL REPOSITORIO
+
+Clonar el proyecto desde GitHub:
+
+```
+git clone https://github.com/TU_USUARIO/devhelper.git
+```
+
+Acceder al directorio:
+
+```
+cd devhelper
+```
+
+3. ESTRUCTURA DEL PROYECTO
+
+El proyecto está organizado en:
+
+* backend/           → Aplicación Spring Boot
+* db/                → Migraciones Flyway
+* oracle-toolkit/    → Scripts SQL generados
+* storage/           → Exportaciones JSON
+* scripts/           → Scripts de ejecución
+* docs/              → Documentación
+
+4. PRIMERA EJECUCIÓN
+
+El proyecto incluye Maven Wrapper (mvnw), por lo que no necesitas Maven instalado.
+
+Compilar el proyecto:
+
+Linux / Mac:
+
+```
+./mvnw clean package
+```
+
+Windows:
+
+```
+mvnw clean package
+```
+
+5. EJECUTAR LA APLICACIÓN
+
+Linux / Mac:
+
+```
+./scripts/run.sh
+```
+
+Windows:
+
+```
+.\\scripts\\run.ps1
+```
+
+Esto realizará:
+
+* Creación de carpetas necesarias
+* Inicialización de base de datos SQLite
+* Arranque del servidor Spring Boot
+
+6. ACCESO A LA APLICACIÓN
+
+Abrir navegador en:
+
+```
+http://localhost:8080
+```
+
+Credenciales por defecto:
+
+```
+usuario: admin
+contraseña: admin
+```
+
+7. BASE DE DATOS LOCAL
+
+La base de datos se crea automáticamente en:
+
+Linux / Mac:
+
+```
+~/.devhelper/db/devhelper.db
+```
+
+Windows:
+
+```
+%USERPROFILE%\\.devhelper\\db\\devhelper.db
+```
+
+8. CONFIGURACIÓN OPCIONAL (.env)
+
+Puedes crear un archivo .env en la raíz del proyecto para configurar:
+
+Ejemplo:
+
+```
+DEVHELPER_DATA_DIR=~/.devhelper
+ORACLE_HOST=
+ORACLE_USER=
+ORACLE_PASSWORD=
+```
+
+9. EJECUCIÓN EN MODO DESARROLLO
+
+Linux / Mac:
+
+```
+./scripts/dev.sh
+```
+
+Windows:
+
+```
+.\\scripts\\dev.ps1
+```
+
+10. EJECUTAR TESTS
+
+Linux / Mac:
+
+```
+./scripts/test.sh
+```
+
+Windows:
+
+```
+.\\scripts\\test.ps1
+```
+
+11. POSIBLES PROBLEMAS
+
+* Puerto 8080 ocupado:
+  Cambiar puerto en application.yml
+
+* Error de permisos en scripts:
+  Ejecutar:
+
+  chmod +x scripts/*.sh
+
+* Java incorrecto:
+  Asegurarse de usar Java 21
+
+12. NOTAS
+
+* La aplicación funciona completamente en local
+* No requiere conexión a internet tras la instalación
+* No utiliza servicios externos ni APIs de pago
+

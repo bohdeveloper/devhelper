@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/main}">
+<body>
+    <th:block layout:fragment="title">AI Helper</th:block>
+    <th:block layout:fragment="page-header">Asistente de Inteligencia Artificial</th:block>
+
+    <th:block layout:fragment="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">AI Prompts</li>
+    </th:block>
+
+    <div layout:fragment="content">
+        <div class="row">
+            <div class="col-12 mb-4">
+                <div class="card shadow-sm border-0 border-start border-info border-4">
+                    <div class="card-body">
+                        <h6 class="card-title fw-bold text-info"><i class="bi bi-robot me-2"></i>Librería de Prompts</h6>
+                        <p class="small text-muted mb-0">
+                            Copia estos prompts probados y utilízalos en tu herramienta de IA generativa favorita (ChatGPT, Claude, Gemini). Devhelper te proporciona las mejores instrucciones para generar código en base a su arquitectura local.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-4" th:each="prompt : ${prompts}">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-header bg-body pt-3 pb-0 border-bottom-0 d-flex justify-content-between align-items-center">
+                        <h6 class="fw-bold mb-0 text-dark"><i class="bi bi-chat-square-text me-2 text-primary"></i> <span th:text="${prompt.title}"></span></h6>
+                        <span class="badge bg-light text-dark border" th:text="${prompt.category}"></span>
+                    </div>
+                    <div class="card-body mt-2">
+                        <div class="bg-dark text-light p-3 rounded" style="font-size: 14px; position: relative;">
+                            <span class="font-monospace" th:text="${prompt.promptText}"></span>
+                            <button class="btn btn-sm btn-outline-light copy-btn position-absolute top-0 end-0 m-2 border-0" 
+                                    th:data-clipboard="${prompt.promptText}" title="Copiar al portapapeles">
+                                <i class="bi bi-clipboard fs-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <th:block layout:fragment="page-scripts">
+        <script>
+            $(document).ready(function() {
+                $('.copy-btn').click(function() {
+                    let content = $(this).attr('data-clipboard');
+                    ClipboardUtil.copyToClipboard(content);
+                });
+            });
+        </script>
+    </th:block>
+</body>
+</html>

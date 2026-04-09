@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/main}">
+<body>
+    <th:block layout:fragment="title">Oracle Toolkit</th:block>
+    <th:block layout:fragment="page-header">Oracle Toolkit</th:block>
+    
+    <th:block layout:fragment="page-toolbar">
+        <a th:href="@{/oracle/create}" class="btn btn-sm btn-primary">
+            <i class="bi bi-plus-circle me-1"></i>Nuevo Script SQL
+        </a>
+    </th:block>
+
+    <th:block layout:fragment="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Oracle Toolkit</li>
+    </th:block>
+
+    <div layout:fragment="content">
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle me-1"></i><span th:text="${successMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="row">
+            <div class="col-12 mb-4">
+                <div class="card shadow-sm border-0 border-start border-danger border-4">
+                    <div class="card-body">
+                        <h6 class="card-title fw-bold text-danger"><i class="bi bi-database-check me-2"></i>Gestión de DDL Local</h6>
+                        <p class="small text-muted mb-0">
+                            Los scripts definidos aquí se guardan automáticamente como ficheros físicos en la ruta <code>/oracle-toolkit/</code> de tu repositorio, listos para integrarse en herramientas de CI/CD o usarse de forma idempotente.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-12">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <table id="oracleTable" class="table table-striped table-hover w-100">
+                            <thead>
+                                <tr>
+                                    <th width="5%">ID</th>
+                                    <th width="35%">Nombre Archivo/Objeto</th>
+                                    <th width="15%">Tipo</th>
+                                    <th width="20%">Fecha</th>
+                                    <th width="25%" class="text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="obj : ${objects}">
+                                    <td th:text="${obj.id}"></td>
+                                    <td class="fw-bold font-monospace" th:text="${obj.name}"></td>
+                                    <td>
+                                        <span class="badge" th:classappend="${
+                                            obj.type == 'TABLE' ? 'bg-primary' : 
+                                            (obj.type == 'VIEW' ? 'bg-info text-dark' : 
+                                            (obj.type == 'PROCEDURE' ? 'bg-warning text-dark' : 'bg-secondary'))
+                                        }" th:text="${obj.type}"></span>
+                                    </td>
+                                    <td th:text="${#temporals.format(obj.createdAt, 'dd-MM-yyyy HH:mm')}"></td>
+                                    <td class="text-center text-nowrap">
+                                        <button type="button" class="btn btn-sm btn-outline-dark copy-btn" 
+                                                th:data-clipboard="${obj.definition}" title="Copiar SQL">
+                                            <i class="bi bi-clipboard"></i> Copiar DDL
+                                        </button>
+                                        <a th:href="@{/oracle/edit/{id}(id=${obj.id})}" class="btn btn-sm btn-outline-primary" title="Editar">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <form th:action="@{/oracle/delete/{id}(id=${obj.id})}" method="post" class="d-inline" onsubmit="return confirm('¿Eliminar script y registro? Nota: no borrará el archivo físico en esta versión.');">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="page-scripts">
+        <script th:inline="none">
+            $(document).ready(function() {
+                $('#oracleTable').DataTable({
+                    language: {
+                        url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
+                    },
+                    order: [[3, 'desc']]
+                });
+
+                $('.copy-btn').click(function() {
+                    ClipboardUtil.copyToClipboard($(this).attr('data-clipboard'));
+                });
+            });
+        </script>
+    </th:block>
+</body>
+</html>

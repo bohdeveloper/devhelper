@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/main}">
+
+<body>
+    <th:block layout:fragment="title">Dashboard</th:block>
+
+    <th:block layout:fragment="page-header">DEV/HELPER</th:block>
+
+    <div layout:fragment="content">
+        <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
+
+            <!-- Cards de metricas rapidas -->
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0 border-start border-primary border-4">
+                    <div class="card-body position-relative">
+                        <h5 class="card-title text-body fw-bold text-uppercase fs-6">Snippets</h5>
+                        <p class="card-text fs-2 fw-bold text-body mb-0" th:text="${totalSnippets}">0</p>
+                        <i
+                            class="bi bi-file-code position-absolute top-50 end-0 translate-middle-y me-4 fs-1 text-primary opacity-25"></i>
+                    </div>
+                    <div class="card-footer bg-body border-0 py-3">
+                        <a th:href="@{/snippets}" class="btn btn-sm btn-outline-primary">Ver todos</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0 border-start border-success border-4">
+                    <div class="card-body position-relative">
+                        <h5 class="card-title text-body fw-bold text-uppercase fs-6">Entidades Modeladas</h5>
+                        <p class="card-text fs-2 fw-bold text-body mb-0" th:text="${totalEntities}">0</p>
+                        <i
+                            class="bi bi-diagram-3 position-absolute top-50 end-0 translate-middle-y me-4 fs-1 text-success opacity-25"></i>
+                    </div>
+                    <div class="card-footer bg-body border-0 py-3">
+                        <a th:href="@{/backend-models}" class="btn btn-sm btn-outline-success">Ir al Modelador</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0 border-start border-info border-4">
+                    <div class="card-body position-relative">
+                        <h5 class="card-title text-body fw-bold text-uppercase fs-6">Prompts IA</h5>
+                        <p class="card-text fs-2 fw-bold text-body mb-0" th:text="${totalPrompts}">0</p>
+                        <i
+                            class="bi bi-robot position-absolute top-50 end-0 translate-middle-y me-4 fs-1 text-info opacity-25"></i>
+                    </div>
+                    <div class="card-footer bg-body border-0 py-3">
+                        <a th:href="@{/ai-prompts}" class="btn btn-sm btn-outline-info">Usar AI Helper</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-body border-bottom-0 py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Acceso rápido a Herramientas</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                            <a th:href="@{/frontend}" class="btn btn-outline-secondary me-md-2"><i
+                                    class="bi bi-layout-wtf me-1"></i> Generador Frontend</a>
+                            <a th:href="@{/oracle}" class="btn btn-outline-secondary"><i
+                                    class="bi bi-database me-1"></i> Oracle Toolkit</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
